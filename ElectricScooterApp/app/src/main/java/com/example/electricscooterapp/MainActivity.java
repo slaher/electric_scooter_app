@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity  {
     private BluetoothSocket socket;
     private BluetoothDevice mDevice;
 
+    private TextView textInformation;
     private OutputStream outputStream;
     private InputStream inputStream;
     private ListView listDevices;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity  {
     private BluetoothAdapter mBluetoothAdapter;
     private Enablers enablers = new Enablers();
     private BluetoothChangeStateEvent mBluetoothChangeStateEvent = new BluetoothChangeStateEvent();
-    private Controls mControls = new Controls();
     private ArrayAdapter adapter;
 
     //    scooter virtual key
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
 
         // controls
+        textInformation = findViewById(R.id.textInformations);
         listDevices = findViewById(R.id.lista);
         discoverDevicesBtn = findViewById(R.id.button);
         switchScooterOnOff = findViewById(R.id.switch_scooter_on_off);
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity  {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         Bluetooth_enable_disable_action(enablers.isBluetoothEnabled(mBluetoothAdapter));
-        mControls.textInformation.setText("Not connected device");
+        textInformation.setText("Not connected device");
 
         BroadcastReceiver mReceiverBluetoothAdapter = new BroadcastReceiver() {
             @Override
@@ -209,7 +210,7 @@ public class MainActivity extends AppCompatActivity  {
     public void ListOfDevices(View view){
         SocketAndStreamClose();
 
-        mControls.textInformation.setText("Not connected device");
+        textInformation.setText("Not connected device");
         switchScooterOnOff.setEnabled(false);
         switchSpeedLimitOnOff.setEnabled(false);
         ClearAdapterList();
@@ -320,7 +321,7 @@ public class MainActivity extends AppCompatActivity  {
         if (adapter != null)
         {
             adapter.clear();
-            mControls.textInformation.setText(text);
+            textInformation.setText(text);
         }
     }
 
@@ -364,7 +365,7 @@ public class MainActivity extends AppCompatActivity  {
             ParcelUuid[] uuids = mDevice.getUuids();
             socket = mDevice.createRfcommSocketToServiceRecord(uuids[0].getUuid());
             socket.connect();
-            mControls.textInformation.setText("Connected to: " + mac);
+            textInformation.setText("Connected to: " + mac);
 
             outputStream = socket.getOutputStream();
             inputStream = socket.getInputStream();
